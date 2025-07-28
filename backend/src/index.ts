@@ -18,7 +18,7 @@ app.get('/',async(_req,res)=>{
         const result = await pool.query('SELECT NOW()');
         res.send(`API is running. DB time:${result.rows[0].now}`);
     }catch(err){
-        res.status(500).send('database connection failed');
+        res.status(500).send('database connection failed'+err);
     }
 });
 
