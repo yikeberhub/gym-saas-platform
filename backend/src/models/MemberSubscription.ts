@@ -8,9 +8,11 @@ import {
     JoinColumn,
     OneToMany,
   } from "typeorm";
-  import { User } from "./User";
-  import { SubscriptionPlan } from "./SubscriptionPlan";
-  import { Payment } from "./Payment";
+
+import { User } from "./User";
+import { Payment } from "./Payment";
+import { SubscriptionPlan } from "./SubscriptionPlan";
+
   
   export enum MemberSubscriptionStatus {
     PENDING = "pending",

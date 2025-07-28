@@ -1,6 +1,5 @@
-// src/app.ts (or src/index.ts)
 import express from "express";
-import "reflect-metadata"; // Ensure this is at the top of your main entry file!
+import "reflect-metadata"; 
 import { initializeDatabase } from "./config/database";
 import dotenv from "dotenv";
 

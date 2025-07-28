@@ -1,18 +1,17 @@
 // src/config/database.ts
-import "reflect-metadata"; // This needs to be imported once, usually at the very top of your application's entry file.
+import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
-import { User } from "../models/User";
+import {User} from "../models/User";
 import { SubscriptionPlan } from "../models/SubscriptionPlan";
 import { MemberSubscription } from "../models/MemberSubscription";
 import { Payment } from "../models/Payment";
 import { Attendance } from "../models/Attendance";
 import { Notification } from "../models/Notification";
-import { GymInfo } from "../models/GymInfo";
-
+// import { GymInfo } from "../models/gymInfo";
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -20,7 +19,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD || "password",
   database: process.env.DB_NAME || "gym_db",
-  synchronize: process.env.NODE_ENV !== "production", // Set to false in production and use migrations
+  synchronize: process.env.NODE_ENV !== "production",
   logging: process.env.NODE_ENV !== "production" ? ["query", "error"] : false,
   entities: [
     User,
@@ -29,9 +28,9 @@ export const AppDataSource = new DataSource({
     Payment,
     Attendance,
     Notification,
-    GymInfo,
+    // GymInfo,
   ],
-  migrations: [], // If synchronize is false, you'll use migrations here
+  migrations: [],
   subscribers: [],
 });
 
@@ -40,7 +39,7 @@ export const initializeDatabase = async () => {
     await AppDataSource.initialize();
     console.log("Database connection established successfully!");
   } catch (error) {
-    console.error("Error connecting to database:", error);
-    process.exit(1); // Exit process with failure
+    console.error("Error connecting to database:",error);
+    process.exit(1);
   }
 };
