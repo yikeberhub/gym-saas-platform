@@ -1,7 +1,5 @@
-import {DataSource} from 'typeOrm';
+import {DataSource} from 'typeorm';
 import {User} from './models/User';
-import {Gym} from './models/Gym';
-import {GymMember} from './models/GymMember';
 
 export const AppDataSource = new DataSource({
     type:"postgres",
@@ -10,7 +8,7 @@ export const AppDataSource = new DataSource({
     username:process.env.DB_USER,
     password:process.env.DB_PASSWORD,
     database:process.env.DB_NAME,
-    entities:[User,Gym,GymMember],
+    entities:[User],
     migrations:['src/migrations/*.ts'],
     logging:false,
     synchronize:false,
