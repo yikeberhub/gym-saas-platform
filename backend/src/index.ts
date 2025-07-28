@@ -1,27 +1,29 @@
-import express,{Application} from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import pool from './config/db';
-
-
+// src/app.ts (or src/index.ts)
+import express from "express";
+import "reflect-metadata"; // Ensure this is at the top of your main entry file!
+import { initializeDatabase } from "./config/database";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const app:Application = express();
-const PORT = process.env.port || 5000;
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+app.use(express.json()); 
 
 app.get('/',async(_req,res)=>{
     try{
-        const result = await pool.query('SELECT NOW()');
-        res.send(`API is running. DB time:${result.rows[0].now}`);
+        res.send('Welcome to Api.');
     }catch(err){
         res.status(500).send('database connection failed'+err);
     }
 });
+const startServer = async () => {
+  await initializeDatabase();
 
-app.listen(PORT,()=>{
+  app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-})
+  });
+};
+
+startServer();
