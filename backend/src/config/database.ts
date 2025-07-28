@@ -5,13 +5,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import {User} from "../models/User";
+import { User } from "../models/User";
 import { SubscriptionPlan } from "../models/SubscriptionPlan";
 import { MemberSubscription } from "../models/MemberSubscription";
 import { Payment } from "../models/Payment";
 import { Attendance } from "../models/Attendance";
 import { Notification } from "../models/Notification";
-// import { GymInfo } from "../models/gymInfo";
+import { GymInfo } from "../models/GymInfo";
+
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -19,8 +20,8 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD || "password",
   database: process.env.DB_NAME || "gym_db",
-  synchronize: process.env.NODE_ENV !== "production",
-  logging: process.env.NODE_ENV !== "production" ? ["query", "error"] : false,
+  synchronize: process.env.NODE_ENV === "development", // True only for development/initial setup
+  logging: process.env.NODE_ENV === "development" ? ["query", "error"] : false,
   entities: [
     User,
     SubscriptionPlan,
@@ -28,18 +29,26 @@ export const AppDataSource = new DataSource({
     Payment,
     Attendance,
     Notification,
-    // GymInfo,
+    GymInfo,
   ],
-  migrations: [],
+  migrations: [`${__dirname}/../migrations/**/*.ts`],
   subscribers: [],
 });
 
 export const initializeDatabase = async () => {
   try {
-    await AppDataSource.initialize();
-    console.log("Database connection established successfully!");
+    // Ensure migrations are run if not in development and synchronize is false
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+      // If synchronize is false (e.g., in production), run migrations here
+      if (!AppDataSource.options.synchronize) {
+        await AppDataSource.runMigrations();
+        console.log("Migrations have been run successfully.");
+      }
+      console.log("Database connection established successfully!");
+    }
   } catch (error) {
-    console.error("Error connecting to database:",error);
+    console.error("Error connecting to database:", error);
     process.exit(1);
   }
 };
