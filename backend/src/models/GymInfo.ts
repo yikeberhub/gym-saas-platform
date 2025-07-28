@@ -2,13 +2,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 @Entity("gym_info")
 export class GymInfo {
   @PrimaryGeneratedColumn("uuid")
-  id!: string; // Still good to have a UUID even if only one record
+  id!: string;
 
   @Column({ type: "varchar", length: 255, nullable: false })
   name!: string;
@@ -34,6 +35,9 @@ export class GymInfo {
   @Column({ type: "jsonb", nullable: true })
   social_media_links!: object | null; // e.g., {facebook: 'url', instagram: 'url'}
 
+  @CreateDateColumn({ type: "timestamp" })
+  created_at!: Date;
+
   @UpdateDateColumn({ type: "timestamp" })
-  updated_at!: Date; // Only update date, as creation is implicit for single record
+  updated_at!: Date;
 }
