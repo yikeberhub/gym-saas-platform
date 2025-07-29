@@ -20,7 +20,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD || "password",
   database: process.env.DB_NAME || "gym_db",
-  synchronize: process.env.NODE_ENV === "development", // True only for development/initial setup
+  synchronize: false,
   logging: process.env.NODE_ENV === "development" ? ["query", "error"] : false,
   entities: [
     User,
